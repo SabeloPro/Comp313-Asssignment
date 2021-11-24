@@ -1,0 +1,160 @@
+/*
+ * The cinema complex solution
+ */
+ 
+/*
+ * Semaphores and shared memory;
+ */
+
+const int FULL = 72; // seventy two Patrons at a time
+
+SharedMem<int>* entering = 0
+
+Semaphore* mutex = 1
+Semaphore* toilet = 1
+Semaphore* patrons = 0
+Semaphore* ushers = 0
+Semaphore* ticketCashier = 0
+Semaphore* snackBarCashier = 0
+Semaphore* snackBarQueue = 0
+
+
+
+/*
+* Ticket sales cashier process
+*/
+
+TicketCashier:
+	loop{
+	   /* Cashier waiting for patrons.*/
+	   patrons->P();
+	   if(entering<=FULL){
+		/* Cashier accept payment and give patron ticket*/
+           }else{
+	   	/*Cashier tell patron go away and come back next show */
+	   }
+	   ticketCashier->V();
+	}
+
+
+============================
+/*
+* Snackbar cashier
+*/
+
+SnackBarCashier j:
+	loop {
+            /* Cashier waiting for customers.*/
+      	    snackBarQueue->P();
+
+             snackBarCashier->V();
+            /* Cashier accepting payment.*/
+        }
+
+
+
+
+/*
+* The Usher process
+*/
+
+Usher k :
+     loop {
+	/* Usher " << k << " waiting for patrons.*/
+	patrons->P();
+	
+	/* Usher "<< k << " colllect ticket and allocate patron*/
+	
+	/* Usher "<< k << " signalling patron .*/
+	ushers->V();
+
+	
+	
+	}
+
+
+
+/*
+* The Patron process
+*/
+
+Patron i:
+
+    mutex.P();
+    if(entering<=FULL){
+	/*Patron i entered the Cinema complex....*/
+
+	int w = w + 1
+	/*Patron is buying a ticket ....*/
+	
+	/* Patron i signals Ticket Cashier */
+	patrons->V();
+	
+	
+
+	/* Patron "<< i << " waiting for tickect Cashier */
+	tickectCashier->P();
+	
+	
+	mutex->V();
+	/*Patron i letting others in .....*/
+	
+	/*Patron is visiting toilet or snackbar*/
+
+	if(visiting_toilet){
+		
+		/*Patron " << i << "waiting to enter toilet */
+		toilet->P();
+
+		/*Patron"<< i <<" Visited toilet "*/
+
+		toilet->V();
+		/*Patron i letting others in ....*/
+
+		/*Patron << i << " leave the toilet */
+	}else{
+		/* Patron "<< i << " joining snackbar queue*/
+		snackBarQueue->V();
+	
+		/* Customer " << i << " waiting for snack bar cashier*/
+      		snackBarCashier->P();
+
+		/* Patron "<< i << "buying to cashier and leave the bar"
+		
+	}
+	/* Patron "<< i << " go to theatre */
+	
+	/* Patron i signals ushers */
+	patrons->V();
+
+	/* Patron "<< i << " waiting for Ushers */
+	ushers->P();
+		
+	/*Patron "<< i << "taking a sit and watch the show */
+	if(probability of toilet<=0.05){
+		/*Patron " << i << "waiting to enter toilet */
+		toilet->P();
+
+		/*Patron"<< i <<" Visited toilet "*/
+
+		toilet->V();
+		/*Patron i letting others in ....*/
+
+		/*Patron "<< i << " leave the toilet */
+		
+		/* Patron "<< i << " go theatre and watch again */
+	}
+	
+	/*After the show Patron "<< i << " leave the cinema */ 
+    }else{
+	/*no available tickets Patron "<< i << " leave the cinema */
+	mutex->V();
+    }	 
+
+
+
+
+
+
+
+
